@@ -1,0 +1,26 @@
+{
+  "world_name" : "KFT Office World",  
+  "valid_task": ["Loop"],
+  "task": {
+    "Delivery": {
+    },
+    "Loop": {
+      "places": [
+        "ceo",
+        "L1_hall",
+        "L2_hall",
+        "L1_charger_1",
+        "L1_charger_2"
+      ]
+    },
+    "Clean": {
+    },
+    "Station": {
+    },
+    "Patrol": {
+    },
+    "Charging": {
+    }
+  }
+}
+

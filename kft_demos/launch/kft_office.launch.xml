@@ -1,0 +1,51 @@
+<?xml version='1.0' ?>
+
+<launch>
+  <arg name="use_sim_time" default="false"/>
+	
+	<!-- launch 파일이 실행될때 같이 실행할 파일들과 변수 값지정 -->
+  <!-- Common launch -->
+  <include file="$(find-pkg-share kft_demos)/common.launch.xml">
+    <arg name="use_sim_time" value="$(var use_sim_time)"/> 
+    <arg name="viz_config_file" value ="$(find-pkg-share kft_demos)/include/kft_office/kft_office.rviz"/>
+    <arg name="config_file" value="$(find-pkg-share kft_demos_maps)/kft_office/kft_office.building.yaml"/>
+    <arg name="dashboard_config_file" value="$(find-pkg-share kft_demos_dashboard_resources)/kft_office/dashboard_config.json"/>
+  </include>
+
+  <!-- TinyRobot fleet adapter -->
+  <group>
+    <include file="$(find-pkg-share kft_demos_fleet_adapter)/launch/fleet_adapter.launch.xml">
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="nav_graph_file" value="$(find-pkg-share kft_demos_maps)/maps/kft_office/nav_graphs/0.yaml" />
+      <arg name="config_file" value="$(find-pkg-share kft_demos)/config/kft_office/tinyRobot_config.yaml"/>
+    </include>
+  </group>
+
+  <!-- DeliveryRobot fleet adapter -->
+  <group>
+    <include file="$(find-pkg-share kft_demos_fleet_adapter)/launch/fleet_adapter.launch.xml">
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="nav_graph_file" value="$(find-pkg-share kft_demos_maps)/maps/kft_office/nav_graphs/1.yaml" />
+      <arg name="config_file" value="$(find-pkg-share kft_demos)/config/kft_office/deliveryRobot_config.yaml"/>
+    </include>
+  </group>
+
+  <!-- cleanerBotE fleet adapter -->
+  <group>
+    <include file="$(find-pkg-share kft_demos_fleet_adapter)/launch/fleet_adapter.launch.xml">
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="nav_graph_file" value="$(find-pkg-share kft_demos_maps)/maps/kft_office/nav_graphs/0.yaml" />
+      <arg name="config_file" value="$(find-pkg-share kft_demos)/config/kft_office/cleanerBotE_config.yaml"/>
+    </include>
+  </group>
+
+  <!-- Mock Docker Node, to provide Fleet Adapter fix cleaning task paths -->
+  <group>
+    <let name="docking_config_file" value="$(find-pkg-share kft_demos_tasks)/kft_office_docker_config.yaml"/>
+    <node pkg="kft_demos_tasks" exec="mock_docker" args="-c $(var docking_config_file)">
+      <param name="use_sim_time" value="$(var use_sim_time)"/>
+    </node>
+  </group>
+
+
+</launch>

@@ -1,0 +1,35 @@
+<?xml version='1.0' ?>
+
+<launch>
+  <arg name="use_sim_time" default="false"/>
+	
+	<!-- launch 파일이 실행될때 같이 실행할 파일들과 변수 값지정 -->
+  <!-- Common launch -->
+  <include file="$(find-pkg-share kft_demos)/common.launch.xml">
+    <arg name="use_sim_time" value="$(var use_sim_time)"/> 
+    <arg name="viz_config_file" value ="$(find-pkg-share kft_demos)/include/demo_office/demo_office.rviz"/>
+    <arg name="config_file" value="$(find-pkg-share kft_demos_maps)/demo_office/demo_office.building.yaml"/>
+    <arg name="dashboard_config_file" value="$(find-pkg-share kft_demos_dashboard_resources)/demo_office/dashboard_config.json"/>
+  </include>
+
+  <!-- 플릿 어댑터 설정 - 미리 생성한 kft_demos_fleet_adapter에 config(로봇 속성)과
+		   트래픽 에디터에서 생성한 로봇 lane을 연결
+		   TinyRobot 로봇 총 3대를 생성하는데 이때 2대는 같은 레인에 1대는 다른 레인에 생성  -->
+  <!-- TinyRobot fleet adapter -->
+  <group>
+    <include file="$(find-pkg-share kft_demos_fleet_adapter)/launch/fleet_adapter.launch.xml">
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="nav_graph_file" value="$(find-pkg-share kft_demos_maps)/maps/demo_office/nav_graphs/0.yaml" />
+      <arg name="config_file" value="$(find-pkg-share kft_demos)/config/demo_office/tinyRobot_config.yaml"/>
+    </include>
+  </group>
+
+  <!-- TinyRobot2 fleet adapter -->
+  <group>
+    <include file="$(find-pkg-share kft_demos_fleet_adapter)/launch/fleet_adapter.launch.xml">
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="nav_graph_file" value="$(find-pkg-share kft_demos_maps)/maps/demo_office/nav_graphs/1.yaml" />
+      <arg name="config_file" value="$(find-pkg-share kft_demos)/config/demo_office/tinyRobot2_config.yaml"/>
+    </include>
+  </group>
+</launch>
